@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEngine;
 
@@ -19,13 +18,7 @@ public class SaveDataManager : MonoBehaviour
     public void Continue()
     {
         string json = File.ReadAllText(SavePath);
-        SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-        Data.ActiveCheckpoint = data.ActiveCheckpoint;
-        Data.TreasureOne = data.TreasureOne;
-        Data.TreasureTwo = data.TreasureTwo;
-        Data.TreasureThree = data.TreasureThree;
-        Data.TreasureFour = data.TreasureFour;
+        Data = JsonUtility.FromJson<SaveData>(json);
     }
 
     public void NewGame()
@@ -64,4 +57,9 @@ public class SaveDataManager : MonoBehaviour
         Save();
     }
 
+    public void OnDefeated()
+    {
+        ++Data.Deaths;
+        Save();
+    }
 }

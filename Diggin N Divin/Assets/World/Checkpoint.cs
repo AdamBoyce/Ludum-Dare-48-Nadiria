@@ -9,19 +9,26 @@ public class Checkpoint : MonoBehaviour
     public Sprite Active;
     public Transform LoadPoint;
     public int Index;
+    public AudioClip CheckpointActivatedClip;
+    public AudioSource AudioSource;
 
     public event EventHandler CheckpointActivated;
 
     private void Start()
     {
         Renderer = GetComponent<SpriteRenderer>();
+        AudioSource = GetComponent<AudioSource>();
         Renderer.sprite = Inactive;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Diver diver))        
-            CheckpointActivated.Invoke(this, EventArgs.Empty);        
+        if (collision.gameObject.TryGetComponent(out Diver diver) && !IsOn)
+        {
+            CheckpointActivated.Invoke(this, EventArgs.Empty);
+            AudioSource.clip = CheckpointActivatedClip;
+            AudioSource.Play();
+        }
     }
 
     public void Activate()

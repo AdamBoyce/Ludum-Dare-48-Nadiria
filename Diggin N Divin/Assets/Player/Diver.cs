@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Diver : MonoBehaviour
@@ -11,10 +12,18 @@ public class Diver : MonoBehaviour
     public Rigidbody2D Body;
     public Animator Animator;
     public SpriteRenderer Renderer;
+    public Transform Transform;
+    public AudioSource AudioSource;
+    public AudioClip FinDash;
+    public AudioClip Defeat;
+    public TextMeshProUGUI Message;
+    public SaveDataManager SaveManager;
+
     public bool IsDashing;
     public bool CanDash;
     public float DashEnd;
     public float DashDelay;
+    public bool IsPaused;
     public Vector2 Trajectory;
     public Vector2 DashVector;
 
@@ -23,6 +32,10 @@ public class Diver : MonoBehaviour
         Body = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         Renderer = GetComponent<SpriteRenderer>();
+        Transform = GetComponent<Transform>();
+        AudioSource = GetComponent<AudioSource>();
+        SaveManager = GameObject.Find("SaveData").GetComponent<SaveDataManager>();
+        IsPaused = false;
     }
 
     private void Update()
@@ -39,13 +52,29 @@ public class Diver : MonoBehaviour
             if (Trajectory == Vector2.zero)
                 Trajectory = Renderer.flipX ? Vector2.right : Vector2.left;
 
-            DashVector = Trajectory * DashVelocity;
+            float angle = Mathf.Atan2(Trajectory.x, Trajectory.y) * Mathf.Rad2Deg;
+            angle = Renderer.flipX || Trajectory.y > 0 ? angle : -angle;
+            DashVector = Trajectory * DashVelocity;            
+
+            Transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            AudioSource.clip = FinDash;
+            AudioSource.Play();
+        }
+
+        if (Input.GetButtonDown("Pause"))
+        {
+            IsPaused = !IsPaused;
+            Message.text = IsPaused ? "Paused" : string.Empty;
+            Time.timeScale = IsPaused ? 0f : 1f;
         }
     }
 
     void FixedUpdate()
     {
         IsDashing = Time.time <= DashEnd;
+
+        if (!IsDashing)
+            Transform.eulerAngles = new Vector3(0f, 0f, 0f);
 
         if (Trajectory.x > 0)
             Renderer.flipX = true;
@@ -64,11 +93,13 @@ public class Diver : MonoBehaviour
         }
         else
             Body.velocity = DashVector;
-
     }
 
-    public void Defeat()
+    public void OnHit()
     {
+        SaveManager.OnDefeated();
         Animator.SetTrigger("Defeated");
+        AudioSource.clip = Defeat;
+        AudioSource.Play();
     }
 }
