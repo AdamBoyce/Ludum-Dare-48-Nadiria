@@ -6,6 +6,7 @@ public class MessageDisplay : MonoBehaviour
     private const float MessageDecayTime = 2.5f;
 
     public TextMeshProUGUI Message;
+    public bool IsPaused;
 
     private float _decay;
 
@@ -16,8 +17,10 @@ public class MessageDisplay : MonoBehaviour
 
     void Update()
     {
-        if (Time.time > _decay)
+        if (Time.time > _decay && !IsPaused)
             Message.text = string.Empty;
+        else if(IsPaused)
+            Message.text = "Paused";
     }
 
     public void ShowMessage(string message)

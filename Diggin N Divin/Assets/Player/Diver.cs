@@ -16,7 +16,7 @@ public class Diver : MonoBehaviour
     public AudioSource AudioSource;
     public AudioClip FinDash;
     public AudioClip Defeat;
-    public TextMeshProUGUI Message;
+    public MessageDisplay MessageDisplay;
     public SaveDataManager SaveManager;
 
     public bool IsDashing;
@@ -35,6 +35,7 @@ public class Diver : MonoBehaviour
         Transform = GetComponent<Transform>();
         AudioSource = GetComponent<AudioSource>();
         SaveManager = GameObject.Find("SaveData").GetComponent<SaveDataManager>();
+        MessageDisplay = GameObject.Find("Canvas").GetComponent<MessageDisplay>();
         IsPaused = false;
     }
 
@@ -64,7 +65,7 @@ public class Diver : MonoBehaviour
         if (Input.GetButtonDown("Pause"))
         {
             IsPaused = !IsPaused;
-            Message.text = IsPaused ? "Paused" : string.Empty;
+            MessageDisplay.IsPaused = IsPaused;
             Time.timeScale = IsPaused ? 0f : 1f;
         }
     }
