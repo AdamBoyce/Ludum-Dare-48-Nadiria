@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Water.unity
     guid: 087dfc0ccb11a5d4794ce68cb98b2301
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: abc9b19a84b07b34493990713235552a
   m_configObjects: {}

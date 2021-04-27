@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Treasure : MonoBehaviour
 {
@@ -36,7 +38,7 @@ public class Treasure : MonoBehaviour
                     SaveManager.GetTreasureThree();
                     break;
                 case 4:
-                    SaveManager.GetTreasureFour();
+                    StartCoroutine("EndGame");
                     break;
             }
 
@@ -44,5 +46,14 @@ public class Treasure : MonoBehaviour
             AudioSource.Play();
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator EndGame()
+    {
+        SaveManager.GetTreasureFour();
+        MessageDisplay.ShowMessage("YOU DID IT!");
+        AudioSource.Play();
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(2);
     }
 }

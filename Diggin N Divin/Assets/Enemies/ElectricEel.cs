@@ -7,10 +7,13 @@ public class ElectricEel : MonoBehaviour
     public const float ShockTime = 0.5f;
     public const float ShockFrequency = 3f;
 
-    public Vector2 PointAOffset;
-    public Vector2 PointBOffset;
+    private Vector2 _leftLimit;
+    private Vector2 _rightLimit;
+
     public float NextShock;
 
+    public Transform LeftLimit;
+    public Transform RightLimit;
     public Rigidbody2D Body;
     public Transform Transform;
     public AudioSource AudioSource;
@@ -31,13 +34,13 @@ public class ElectricEel : MonoBehaviour
         PolyCollider = GetComponent<PolygonCollider2D>();
         Animator = GetComponent<Animator>();
         Diver = GameObject.Find("Diver").GetComponent<Diver>();
-        PointAOffset = new Vector2(Transform.position.x + 4f, Transform.position.y);
-        PointBOffset = new Vector2(Transform.position.x - 4f, Transform.position.y);
+
+        _leftLimit = LeftLimit.position;
+        _rightLimit = RightLimit.position;
 
         BoxCollider.enabled = true;
         PolyCollider.enabled = false;
         NextShock = Time.time + ShockFrequency;
-
     }
 
     void Update()
@@ -61,9 +64,9 @@ public class ElectricEel : MonoBehaviour
         PolyCollider.enabled = Animator.GetBool("IsShocking") && !Diver.IsDashing;
         BoxCollider.enabled = !Animator.GetBool("IsShocking") && !Diver.IsDashing;
 
-        if (Transform.position.x >= PointAOffset.x)
+        if (Transform.position.x >= _rightLimit.x)
             Renderer.flipX = false;
-        else if (Transform.position.x <= PointBOffset.x)
+        else if (Transform.position.x <= _leftLimit.x)
             Renderer.flipX = true;
 
         if (Renderer.flipX)
@@ -77,9 +80,9 @@ public class ElectricEel : MonoBehaviour
         Body.velocity = Animator.GetBool("IsShocking") ? Vector2.zero : new Vector2(velocityX, velocityY);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.TryGetComponent(out Diver diver))
+        if (collider.gameObject.TryGetComponent(out Diver diver))
             diver.OnHit();
     }
 }

@@ -1,16 +1,16 @@
-using TMPro;
 using UnityEngine;
 
 public class Diver : MonoBehaviour
 {
     public const float SwimForce = 3f;
     public const float MaximumVelocity = 6f;
-    public const float DashVelocity = 18f;
+    public const float DashVelocity = 12f;
     public const float DashOffset = 0.583f;
-    public const float DashCooldown = 1.583f;
+    public const float DashCooldown = 1f;
 
     public Rigidbody2D Body;
     public Animator Animator;
+    public Animator DashIconAnimator;
     public SpriteRenderer Renderer;
     public Transform Transform;
     public AudioSource AudioSource;
@@ -31,6 +31,7 @@ public class Diver : MonoBehaviour
     {
         Body = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
+        DashIconAnimator = GameObject.Find("DashIcon").GetComponent<Animator>();
         Renderer = GetComponent<SpriteRenderer>();
         Transform = GetComponent<Transform>();
         AudioSource = GetComponent<AudioSource>();
@@ -54,12 +55,12 @@ public class Diver : MonoBehaviour
                 Trajectory = Renderer.flipX ? Vector2.right : Vector2.left;
 
             float angle = Mathf.Atan2(Trajectory.x, Trajectory.y) * Mathf.Rad2Deg;
-            angle = Renderer.flipX || Trajectory.y > 0 ? angle : -angle;
             DashVector = Trajectory * DashVelocity;            
 
-            Transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            Transform.rotation = Quaternion.Euler(0f, 0f, -angle);
             AudioSource.clip = FinDash;
             AudioSource.Play();
+            DashIconAnimator.SetTrigger("Dash");
         }
 
         if (Input.GetButtonDown("Pause"))
@@ -72,7 +73,11 @@ public class Diver : MonoBehaviour
 
     void FixedUpdate()
     {
+        bool isDashingOnFixedUpdate = IsDashing;
         IsDashing = Time.time <= DashEnd;
+
+        if(!IsDashing && isDashingOnFixedUpdate)
+            Body.velocity = Vector2.zero;
 
         if (!IsDashing)
             Transform.eulerAngles = new Vector3(0f, 0f, 0f);

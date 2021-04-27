@@ -33,4 +33,9 @@ public class Menu : MonoBehaviour
         SaveManager.Continue();
         SceneManager.LoadScene(1);
     }
+
+    public void OnExit()
+    {
+        Application.Quit();
+    }
 }
