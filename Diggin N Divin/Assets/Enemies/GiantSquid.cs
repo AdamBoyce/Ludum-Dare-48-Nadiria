@@ -3,7 +3,7 @@ using UnityEngine;
 public class GiantSquid : MonoBehaviour
 {
     public const float UpSpeed = 8f;
-    public const float DownSpeed = 1f;
+    public const float DownSpeed = 2f;
 
     public Vector2 Base;
     public Vector2 Top;

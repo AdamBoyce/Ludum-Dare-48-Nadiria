@@ -30,22 +30,28 @@ public class Treasure : MonoBehaviour
             {
                 case 1:
                     SaveManager.GetTreasureOne();
+                    TreasureGet();
                     break;
                 case 2:
                     SaveManager.GetTreasureTwo();
+                    TreasureGet();
                     break;
                 case 3:
                     SaveManager.GetTreasureThree();
+                    TreasureGet();
                     break;
                 case 4:
                     StartCoroutine("EndGame");
                     break;
             }
-
-            MessageDisplay.ShowMessage("Treasure!");
-            AudioSource.Play();
-            Destroy(gameObject);
         }
+    }
+
+    void TreasureGet()
+    {
+        MessageDisplay.ShowMessage("Treasure!");
+        AudioSource.Play();
+        Destroy(gameObject);
     }
 
     IEnumerator EndGame()

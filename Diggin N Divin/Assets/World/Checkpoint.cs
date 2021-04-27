@@ -11,23 +11,36 @@ public class Checkpoint : MonoBehaviour
     public int Index;
     public AudioClip CheckpointActivatedClip;
     public AudioSource AudioSource;
-
-    public event EventHandler CheckpointActivated;
+    public SaveDataManager SaveManager;
+    public MessageDisplay MessageDisplay;
 
     private void Start()
     {
+        SaveManager = GameObject.Find("SaveData").GetComponent<SaveDataManager>();
         Renderer = GetComponent<SpriteRenderer>();
         AudioSource = GetComponent<AudioSource>();
         Renderer.sprite = Inactive;
+        MessageDisplay = GameObject.Find("Canvas").GetComponent<MessageDisplay>();
+
+        if (SaveManager.Data.ActiveCheckpoint == Index)
+            Activate();
+    }
+
+    private void Update()
+    {
+        if (SaveManager.Data.ActiveCheckpoint != Index)
+            Deactivate();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Diver diver) && !IsOn)
         {
-            CheckpointActivated.Invoke(this, EventArgs.Empty);
             AudioSource.clip = CheckpointActivatedClip;
             AudioSource.Play();
+            MessageDisplay.ShowMessage("Checkpoint!");
+            SaveManager.Checkpoint(Index);
+            Activate();
         }
     }
 

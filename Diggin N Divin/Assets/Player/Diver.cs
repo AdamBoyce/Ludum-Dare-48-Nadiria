@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Diver : MonoBehaviour
@@ -18,6 +19,7 @@ public class Diver : MonoBehaviour
     public AudioClip Defeat;
     public MessageDisplay MessageDisplay;
     public SaveDataManager SaveManager;
+    public List<Checkpoint> Checkpoints;
 
     public bool IsDashing;
     public bool CanDash;
@@ -38,6 +40,8 @@ public class Diver : MonoBehaviour
         SaveManager = GameObject.Find("SaveData").GetComponent<SaveDataManager>();
         MessageDisplay = GameObject.Find("Canvas").GetComponent<MessageDisplay>();
         IsPaused = false;
+
+        Transform.position = Checkpoints[SaveManager.Data.ActiveCheckpoint].LoadPoint.position;
     }
 
     private void Update()
