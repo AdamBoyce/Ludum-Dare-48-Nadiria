@@ -20,6 +20,7 @@ public class Diver : MonoBehaviour
     public MessageDisplay MessageDisplay;
     public SaveDataManager SaveManager;
     public List<Checkpoint> Checkpoints;
+    public FixedJoystick Joystick;
 
     public bool IsDashing;
     public bool CanDash;
@@ -46,33 +47,8 @@ public class Diver : MonoBehaviour
 
     private void Update()
     {
-        Trajectory = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Trajectory = new Vector2(Joystick.Horizontal, Joystick.Vertical);
         CanDash = !IsDashing && Time.time >= DashDelay;
-
-        if (Input.GetButtonDown("Jump") && CanDash)
-        {
-            DashEnd = Time.time + DashOffset;
-            DashDelay = Time.time + DashCooldown;
-            Animator.SetTrigger("Dash");
-
-            if (Trajectory == Vector2.zero)
-                Trajectory = Renderer.flipX ? Vector2.right : Vector2.left;
-
-            float angle = Mathf.Atan2(Trajectory.x, Trajectory.y) * Mathf.Rad2Deg;
-            DashVector = Trajectory * DashVelocity;            
-
-            Transform.rotation = Quaternion.Euler(0f, 0f, -angle);
-            AudioSource.clip = FinDash;
-            AudioSource.Play();
-            DashIconAnimator.SetTrigger("Dash");
-        }
-
-        if (Input.GetButtonDown("Pause"))
-        {
-            IsPaused = !IsPaused;
-            MessageDisplay.IsPaused = IsPaused;
-            Time.timeScale = IsPaused ? 0f : 1f;
-        }
     }
 
     void FixedUpdate()
@@ -111,5 +87,33 @@ public class Diver : MonoBehaviour
         Animator.SetTrigger("Defeated");
         AudioSource.clip = Defeat;
         AudioSource.Play();
+    }
+
+    public void OnDash()
+    {
+        if (CanDash)
+        {
+            DashEnd = Time.time + DashOffset;
+            DashDelay = Time.time + DashCooldown;
+            Animator.SetTrigger("Dash");
+
+            if (Trajectory == Vector2.zero)
+                Trajectory = Renderer.flipX ? Vector2.right : Vector2.left;
+
+            float angle = Mathf.Atan2(Trajectory.x, Trajectory.y) * Mathf.Rad2Deg;
+            DashVector = Trajectory * DashVelocity;
+
+            Transform.rotation = Quaternion.Euler(0f, 0f, -angle);
+            AudioSource.clip = FinDash;
+            AudioSource.Play();
+            DashIconAnimator.SetTrigger("Dash");
+        }
+    }
+
+    public void OnPause()
+    {
+        IsPaused = !IsPaused;
+        MessageDisplay.IsPaused = IsPaused;
+        Time.timeScale = IsPaused ? 0f : 1f;
     }
 }

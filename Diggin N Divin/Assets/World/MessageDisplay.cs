@@ -7,6 +7,7 @@ public class MessageDisplay : MonoBehaviour
 
     public TextMeshProUGUI Message;
     public GameObject ExitButton;
+    public GameObject ResumeButton;
     public bool IsPaused;
 
     private float _decay;
@@ -15,6 +16,7 @@ public class MessageDisplay : MonoBehaviour
     {
         Message = GameObject.Find("Message").GetComponent<TextMeshProUGUI>();
         ExitButton.SetActive(false);
+        ResumeButton.SetActive(false);
     }
 
     void Update()
@@ -23,11 +25,13 @@ public class MessageDisplay : MonoBehaviour
         {
             Message.text = string.Empty;
             ExitButton.SetActive(false);
+            ResumeButton.SetActive(false);
         }        
         else if (IsPaused)
         {
             Message.text = "Paused";
             ExitButton.SetActive(true);
+            ResumeButton.SetActive(true);
         }
     }
 
