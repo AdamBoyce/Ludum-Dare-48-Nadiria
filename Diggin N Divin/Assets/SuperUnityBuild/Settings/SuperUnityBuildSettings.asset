@@ -1,5 +1,72 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8643246331190939203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89df54eebccd0704dbbe96915fbb9a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 13
+    name: Android
+    enabled: 1
+    binaryNameFormat: '{0}.apk'
+  variants:
+  - variantName: Device Type
+    selectedIndex: 0
+    values:
+    - ARMv7
+    - ARM64
+    - All
+  - variantName: Texture Compression
+    selectedIndex: 0
+    values:
+    - Generic
+    - DXT
+    - PVRTC
+    - ATC
+    - ETC
+    - ETC2
+    - ASTC
+  - variantName: Build System
+    selectedIndex: 0
+    values:
+    - Gradle
+  - variantName: Split APKs
+    selectedIndex: 0
+    values:
+    - Disabled
+    - Enabled
+  - variantName: Min SDK Version
+    selectedIndex: 0
+    values:
+    - Auto
+    - 16
+    - 17
+    - 18
+    - 19
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    - 27
+    - 28
+    - 29
+    - 30
+  platformName: Android
+  dataDirNameFormat: '{0}_Data'
+  targetGroup: 7
 --- !u!114 &-8355906678954976017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,8 +166,8 @@ MonoBehaviour:
     buildPath: $VERSION.$BUILD/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$DISTRIBUTION
     openFolderPostBuild: 1
   _productParameters:
-    buildCounter: 2
-    lastGeneratedVersion: 1.0.0.2
+    buildCounter: 3
+    lastGeneratedVersion: 1.0.0.3
     version: 1.0.0.$BUILD
     autoGenerate: 1
     syncWithPlayerSettings: 0
@@ -123,13 +190,14 @@ MonoBehaviour:
     - {fileID: -8059467235309363871}
     - {fileID: 386220962515931585}
     - {fileID: -8355906678954976017}
+    - {fileID: -8643246331190939203}
   _projectConfigurations:
     configSet:
-      _Buckets: 02000000ffffffffffffffff08000000ffffffff0000000006000000ffffffffffffffff07000000ffffffff04000000ffffffffffffffffffffffff03000000ffffffff
-      _HashCodes: 77a7aa19510e9f594848db6095803a14134e5c09fe3787566d38f6476da5e2352d6dfd480000000000000000000000000000000000000000000000000000000000000000
-      _Next: ffffffffffffffffffffffffffffffffffffffff01000000ffffffffffffffff050000000000000000000000000000000000000000000000000000000000000000000000
-      _Count: 9
-      _Version: 9
+      _Buckets: 02000000ffffffff090000000a000000ffffffff0000000006000000ffffffffffffffff07000000ffffffff04000000ffffffffffffffffffffffff08000000ffffffff
+      _HashCodes: 77a7aa19510e9f594848db6095803a14134e5c09fe3787566d38f6476da5e2353a5f094aed64316d2d6dfd48000000000000000000000000000000000000000000000000
+      _Next: ffffffffffffffffffffffffffffffffffffffff01000000ffffffffffffffff03000000ffffffff05000000000000000000000000000000000000000000000000000000
+      _Count: 11
+      _Version: 11
       _FreeList: -1
       _FreeCount: 0
       _Keys:
@@ -141,6 +209,8 @@ MonoBehaviour:
       - Release/Linux
       - Release/WebGL/WebGL
       - Release/WebGL
+      - Release/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
+      - Release/Android
       - Release
       - 
       - 
@@ -148,20 +218,18 @@ MonoBehaviour:
       - 
       - 
       - 
-      - 
-      - 
       _Values:
-      - enabled: 1
+      - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
         - Release/PC/Windows x86
-      - enabled: 1
+      - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
         - Release/macOS/macOS (Intelx64)
-      - enabled: 1
+      - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
@@ -172,15 +240,17 @@ MonoBehaviour:
         childKeys:
         - Release/WebGL/WebGL
       - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Release/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
+      - enabled: 1
         childKeys:
         - Release/PC
         - Release/macOS
         - Release/Linux
         - Release/WebGL
-      - enabled: 1
-        childKeys: []
-      - enabled: 1
-        childKeys: []
+        - Release/Android
       - enabled: 1
         childKeys: []
       - enabled: 1
@@ -198,7 +268,7 @@ MonoBehaviour:
     showBuildInfo: 0
     hideDisabled: 0
     treeView: 0
-    selectedKeyChain: 
+    selectedKeyChain: Release/Android/Android (ARMv7,Generic,Gradle,Disabled,Auto)
   _preBuildActions:
     buildActions: []
   _postBuildActions:
